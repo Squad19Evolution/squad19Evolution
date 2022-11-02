@@ -2,12 +2,10 @@ FROM node:18-alpine
 
 USER root
 
-RUN npm i -g @nestjs/cli
-
-RUN bash
-
-RUN npm install 
-
 WORKDIR /
 
-CMD ["npm", "install"]
+RUN npm i -g @nestjs/cli
+
+COPY . .
+
+RUN npm install
