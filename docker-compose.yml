@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  postgres_db:
+    container_name: orange_db
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_DB: db
+
+  back:
+    build: ./back-app
+    container_name: api
+    ports:
+      - 3000:3000
+    working_dir: /back-app
+    tty: true
+    stdin_open: true
+    command: npm run start:dev
+    volumes:
+      - ./back-app:/back-app
+    depends_on:
+      - postgres_db
+    environment:
+      PORT: 3000
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_HOST: postgres_db
+    restart: always
+
+  front:
+    build: ./front-app
+    container_name: front
+    ports:
+      - 3005:3005
+    working_dir: /front-app
+    command: npm run dev
+    volumes:
+      - ./front-app/:/front-app
