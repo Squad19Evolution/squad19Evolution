@@ -10,14 +10,21 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthService } from './auth.service';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { PublicUserDTO } from './dto/public-user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   @Post()
+  @Serialize(PublicUserDTO)
   create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+    return this.authService.signup(createUserDto);
   }
 
   @Get()
