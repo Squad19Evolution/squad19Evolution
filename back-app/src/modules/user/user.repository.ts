@@ -12,4 +12,8 @@ export class UserRepository {
     const newUser = this.repo.create(user);
     return this.repo.save(newUser);
   }
+
+  async findByEmail(email: string) {
+    return this.repo.findOne({ where: { email } });
+  }
 }
