@@ -9,7 +9,7 @@ export class UserService {
 
   async createUser(createUserDto: CreateUserDto) {
     const userExists = await this.userRepo.findByEmail(createUserDto.email);
-    if (userExists) return new ConflictException('Email already in use');
+    if (userExists) throw new ConflictException('Email already in use');
     return this.userRepo.create(createUserDto);
   }
 
