@@ -1,14 +1,23 @@
-import Login from "./pages/Login"
 
 
+import Menu from './components/layout/Menu';
+import Rodape from './components/layout/Rodape'
 
 function App() {
 
   return (
     <div className="App">
-      <Login />
-    </div>
-  )
+
+      <Menu />
+      <Rodape />
+
+
+
+
+
+
+    </div >
+  );
 }
 
 export default App
