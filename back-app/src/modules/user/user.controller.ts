@@ -23,8 +23,10 @@ export class UserController {
 
   @Post()
   @Serialize(PublicUserDTO)
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.authService.signup(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto, @Session() session: any) {
+    const newUser = await this.authService.signup(createUserDto);
+    session.userId = newUser.id;
+    return newUser;
   }
 
   @Get(':id')
