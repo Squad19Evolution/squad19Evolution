@@ -3,16 +3,20 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
+  Session,
+  NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthService } from './auth.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { PublicUserDTO } from './dto/public-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { User } from './entities/user.entity';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('user')
 export class UserController {
@@ -23,27 +27,38 @@ export class UserController {
 
   @Post()
   @Serialize(PublicUserDTO)
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.authService.signup(createUserDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  async create(@Body() createUserDto: CreateUserDto, @Session() session: any) {
+    const newUser = await this.authService.signup(createUserDto);
+    session.userId = newUser.id;
+    return newUser;
   }
 
   @Get(':id')
+  @Serialize(PublicUserDTO)
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Post('/login')
+  async login(@Body() body: UserLoginDto, @Session() session: any) {
+    const user = await this.authService.login(body);
+    if (!user) {
+      session.userId = null;
+      throw new NotFoundException('User not found');
+    }
+    session.userId = user.id;
+    return user;
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Post('/logout')
+  async logout(@Session() session: any) {
+    session.userId = null;
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard)
+  @Serialize(PublicUserDTO)
+  async whoAmI(@CurrentUser() user: User) {
+    return user;
   }
 }

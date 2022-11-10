@@ -3,6 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { User } from './modules/user/entities/user.entity';
 import { UserModule } from './modules/user/user.module';
+import { ContentModule } from './modules/content/content.module';
+import { PathModule } from './modules/path/path.module';
+import { Path } from './modules/path/entities/path.entity';
+import { Content } from './modules/content/entities/content.entity';
 
 @Module({
   imports: [
@@ -14,9 +18,11 @@ import { UserModule } from './modules/user/user.module';
       username: 'root',
       port: 5432,
       database: 'db',
-      entities: [User],
+      entities: [User, Path, Content],
       synchronize: true,
     }),
+    ContentModule,
+    PathModule,
   ],
   controllers: [AppController],
   providers: [],
