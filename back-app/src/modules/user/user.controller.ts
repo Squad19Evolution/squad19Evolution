@@ -30,6 +30,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @Serialize(PublicUserDTO)
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
@@ -43,5 +44,10 @@ export class UserController {
     }
     session.userId = user.id;
     return user;
+  }
+
+  @Post('/logout')
+  async logout(@Session() session: any) {
+    session.userId = null;
   }
 }
