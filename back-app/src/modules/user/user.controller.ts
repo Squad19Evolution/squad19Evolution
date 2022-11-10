@@ -6,6 +6,7 @@ import {
   Param,
   Session,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,6 +14,9 @@ import { AuthService } from './auth.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { PublicUserDTO } from './dto/public-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { User } from './entities/user.entity';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('user')
 export class UserController {
@@ -49,5 +53,12 @@ export class UserController {
   @Post('/logout')
   async logout(@Session() session: any) {
     session.userId = null;
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard)
+  @Serialize(PublicUserDTO)
+  async whoAmI(@CurrentUser() user: User) {
+    return user;
   }
 }
