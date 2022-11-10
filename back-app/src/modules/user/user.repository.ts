@@ -16,4 +16,8 @@ export class UserRepository {
   async findByEmail(email: string) {
     return this.repo.findOne({ where: { email } });
   }
+
+  async findById(id: number) {
+    return this.repo.findOne({ where: { id } });
+  }
 }
