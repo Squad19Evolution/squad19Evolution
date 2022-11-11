@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Path {
@@ -13,4 +18,7 @@ export class Path {
 
   @Column()
   img_url: string;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
