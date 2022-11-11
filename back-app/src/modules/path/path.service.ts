@@ -1,17 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePathDto } from './dto/create-path.dto';
+import { PathRepository } from './path.repository';
 
 @Injectable()
 export class PathService {
-  create(createPathDto: CreatePathDto) {
-    return 'This action adds a new path';
+  constructor(private pathRepo: PathRepository) {}
+
+  async create(createPathDto: CreatePathDto) {
+    return this.pathRepo.create(createPathDto);
   }
 
   findAll() {
     return `This action returns all path`;
   }
 
-  findById(id: number) {
-    return `This action returns a #${id} path`;
+  async findById(id: number) {
+    const path = await this.pathRepo.findById(id);
+    if (!path) throw new NotFoundException('Path not found');
+    return path;
   }
 }
