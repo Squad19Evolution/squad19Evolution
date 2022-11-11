@@ -33,6 +33,13 @@ export class UserController {
     return newUser;
   }
 
+  @Get('/me')
+  @UseGuards(AuthGuard)
+  @Serialize(PublicUserDTO)
+  async whoAmI(@CurrentUser() user: User) {
+    return user;
+  }
+
   @Get(':id')
   @Serialize(PublicUserDTO)
   findOne(@Param('id') id: string) {
@@ -40,6 +47,7 @@ export class UserController {
   }
 
   @Post('/login')
+  @Serialize(PublicUserDTO)
   async login(@Body() body: UserLoginDto, @Session() session: any) {
     const user = await this.authService.login(body);
     if (!user) {
@@ -53,12 +61,5 @@ export class UserController {
   @Post('/logout')
   async logout(@Session() session: any) {
     session.userId = null;
-  }
-
-  @Get('/me')
-  @UseGuards(AuthGuard)
-  @Serialize(PublicUserDTO)
-  async whoAmI(@CurrentUser() user: User) {
-    return user;
   }
 }

@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { PathService } from './path.service';
 import { CreatePathDto } from './dto/create-path.dto';
-import { UpdatePathDto } from './dto/update-path.dto';
 
 @Controller('path')
 export class PathController {
@@ -26,17 +17,7 @@ export class PathController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pathService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePathDto: UpdatePathDto) {
-    return this.pathService.update(+id, updatePathDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pathService.remove(+id);
+  findById(@Param('id') id: string) {
+    return this.pathService.findById(+id);
   }
 }
