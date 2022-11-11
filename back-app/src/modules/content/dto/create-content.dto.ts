@@ -1,7 +1,8 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateContentDto {
   @IsNumber()
+  @IsOptional()
   path_id: number;
 
   @IsString()
