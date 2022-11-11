@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateContentDto } from './dto/create-content.dto';
-import { UpdateContentDto } from './dto/update-content.dto';
 
 @Injectable()
 export class ContentService {
@@ -12,15 +11,7 @@ export class ContentService {
     return `This action returns all content`;
   }
 
-  findOne(id: number) {
+  findById(id: number) {
     return `This action returns a #${id} content`;
-  }
-
-  update(id: number, updateContentDto: UpdateContentDto) {
-    return `This action updates a #${id} content`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} content`;
   }
 }

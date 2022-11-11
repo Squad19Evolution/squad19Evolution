@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePathDto } from './dto/create-path.dto';
-import { UpdatePathDto } from './dto/update-path.dto';
 
 @Injectable()
 export class PathService {
@@ -12,15 +11,7 @@ export class PathService {
     return `This action returns all path`;
   }
 
-  findOne(id: number) {
+  findById(id: number) {
     return `This action returns a #${id} path`;
-  }
-
-  update(id: number, updatePathDto: UpdatePathDto) {
-    return `This action updates a #${id} path`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} path`;
   }
 }
