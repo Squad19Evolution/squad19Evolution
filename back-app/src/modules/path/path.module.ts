@@ -9,5 +9,6 @@ import { PathRepository } from './path.repository';
   imports: [TypeOrmModule.forFeature([Path])],
   controllers: [PathController],
   providers: [PathService, PathRepository],
+  exports: [PathService, PathRepository],
 })
 export class PathModule {}
