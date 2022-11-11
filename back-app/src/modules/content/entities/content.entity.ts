@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Path } from 'src/modules/path/entities/path.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Content {
@@ -13,4 +14,7 @@ export class Content {
 
   @Column()
   duration: string;
+
+  @ManyToMany(() => Path, (path) => path.contents)
+  paths: Path[];
 }
