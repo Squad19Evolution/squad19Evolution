@@ -6,10 +6,14 @@ import { Path } from './entities/path.entity';
 
 @Injectable()
 export class PathRepository {
-  constructor(@InjectRepository(Path) private repo: Repository<Path>) {}
+  constructor(@InjectRepository(Path) public repo: Repository<Path>) {}
 
   async create(path: CreatePathDto) {
     const newPath = this.repo.create(path);
     return this.repo.save(newPath);
+  }
+
+  async findById(id: number) {
+    return this.repo.findOne({ where: { id } });
   }
 }
