@@ -11,7 +11,7 @@ export class PathService {
   }
 
   findAll() {
-    return `This action returns all path`;
+    return this.pathRepo.findAll();
   }
 
   async findById(id: number) {
